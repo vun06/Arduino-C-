@@ -11,21 +11,15 @@ const int echoPin = 12;
 // defines variables
 long duration;
 int distance;
-bool objectPresent;
 
-void setup() {
-  // UltraSonoc Pins
+long ultrasonic_distance() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
 
-  Serial.begin(9600); // Starts the serial communication
-}
-
-void loop() {
-  // Clears the trigPin
+   // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 
@@ -39,27 +33,30 @@ void loop() {
 
   // Calculating the distance
   distance = duration * 0.034 / 2;
-  
-  // Prints the distance on the Serial Monitor
+  return distance;
+}
+void setup() {
+  // UltraSonoc Pins
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  Serial.begin(9600); // Starts the serial communication
+}
+
+void loop() {
+  distance = ultrasonic_distance();
   Serial.print("Distance: ");
   Serial.println(distance);
-  
-  if (distance < 100) {
-    if (objectPresent == true) {
-      Serial.println("Object Detected & Present");
-      objectPresent = false;
-    } else {
-        if (!objectPresent) {
-        Serial.println("Detected Object Is Gone");
-        objectPresent = true;
-     } else {
-        Serial.println("Watiting To Detect An Object");
+  Serial.println("waiting To Detect An Object");
+  while (distance < 100 ) {
+    Serial.println("Objected Deteced & Present");
+    distance = ultrasonic_distance();
+      if(distance > 100 ) {
+          Serial.println("Detected Object Is Gone");
+        }
       }
-    }
-  }
-  // --------------------------------------------------------
-  // ADD Your Code Here - Detect a specific distance... like distance > 5 cm
+    } 
   
-  
-  // --------------------------------------------------------
-}
