@@ -11,7 +11,7 @@ const int echoPin = 12;
 // defines variables
 long duration;
 int distance;
-
+int n = 0;
 long ultrasonic_distance() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
@@ -51,11 +51,16 @@ void loop() {
   Serial.print("Distance: ");
   Serial.println(distance);
   Serial.println("waiting To Detect An Object");
-  while (distance < 100 ) {
+  while (distance < 10 ) {
     Serial.println("Objected Deteced & Present");
     distance = ultrasonic_distance();
-      if(distance > 100 ) {
+    n++;
+    delay(100);
+      if(distance > 10 ) {
           Serial.println("Detected Object Is Gone");
+          Serial.print(n);
+          Serial.println("Objects Detected");
+          delay(50);
         }
       }
     } 
